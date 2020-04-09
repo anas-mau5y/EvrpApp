@@ -1,14 +1,17 @@
 package instance;
 
 public class NodeCoordSection {
-    Integer id;
-    Integer x;
-    Integer y;
 
+   private Integer id;
+   private Integer x;
+   private Integer y;
     public NodeCoordSection(Integer id, Integer x, Integer y) {
         this.id = id;
         this.x = x;
         this.y = y;
+    }
+
+    public NodeCoordSection() {
     }
 
     public Integer getId() {

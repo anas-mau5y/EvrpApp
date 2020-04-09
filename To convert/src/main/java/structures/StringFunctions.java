@@ -1,5 +1,5 @@
 package structures;
-
+//	Cette Classe Implemente des fonctions classique du C sur les chaines de caractères
 public final class StringFunctions {
 
     public static String changeCharacter(String sourceString, int charIndex, char newChar)
@@ -8,9 +8,8 @@ public final class StringFunctions {
                 + Character.toString(newChar) + (charIndex < sourceString.length() - 1 ? sourceString.substring(charIndex + 1) : "");
     }
 
-    //------------------------------------------------------------------------------------
-    //	This method replicates the classic C string function 'isxdigit' (and 'iswxdigit').
-    //------------------------------------------------------------------------------------
+
+
     public static boolean isXDigit(char character)
     {
         if (Character.isDigit(character))
@@ -21,9 +20,7 @@ public final class StringFunctions {
             return false;
     }
 
-    //------------------------------------------------------------------------------------
-    //	This method replicates the classic C string function 'strchr' (and 'wcschr').
-    //------------------------------------------------------------------------------------
+
     public static String strChr(String stringToSearch, char charToFind)
     {
         int index = stringToSearch.indexOf(charToFind);
@@ -33,9 +30,7 @@ public final class StringFunctions {
             return null;
     }
 
-    //------------------------------------------------------------------------------------
-    //	This method replicates the classic C string function 'strrchr' (and 'wcsrchr').
-    //------------------------------------------------------------------------------------
+
     public static String strRChr(String stringToSearch, char charToFind)
     {
         int index = stringToSearch.lastIndexOf(charToFind);
@@ -44,10 +39,6 @@ public final class StringFunctions {
         else
             return null;
     }
-
-    //------------------------------------------------------------------------------------
-    //	This method replicates the classic C string function 'strstr' (and 'wcsstr').
-    //------------------------------------------------------------------------------------
     public static String strStr(String stringToSearch, String stringToFind)
     {
         int index = stringToSearch.indexOf(stringToFind);
@@ -57,9 +48,6 @@ public final class StringFunctions {
             return null;
     }
 
-    //------------------------------------------------------------------------------------
-    //	This method replicates the classic C string function 'strtok' (and 'wcstok').
-    //------------------------------------------------------------------------------------
     private static String activeString;
     private static int activePosition;
     public static String strTok(String stringToTokenize, String delimiters)
@@ -70,29 +58,26 @@ public final class StringFunctions {
             activePosition = -1;
         }
 
-        //the stringToTokenize was never set:
+
         if (activeString == null)
             return null;
 
-        //all tokens have already been extracted:
+
         if (activePosition == activeString.length())
             return null;
 
-        //bypass delimiters:
+
         activePosition++;
         while (activePosition < activeString.length() && delimiters.indexOf(activeString.charAt(activePosition)) > -1)
         {
             activePosition++;
         }
 
-        //only delimiters were left, so return null:
         if (activePosition == activeString.length())
             return null;
 
-        //get starting position of string to return:
         int startingPosition = activePosition;
 
-        //read until next delimiter:
         do
         {
             activePosition++;

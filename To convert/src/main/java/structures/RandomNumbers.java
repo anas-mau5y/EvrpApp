@@ -1,32 +1,27 @@
 package structures;
 
-public final class RandomNumbers
-{
+public final class RandomNumbers {
     private static java.util.Random r;
 
-    public static int nextNumber()
-    {
+    public static int nextNumber() {
         if (r == null)
-            Seed();
+            seed();
 
         return r.nextInt();
     }
 
-    public static int nextNumber(int ceiling)
-    {
+    public static int nextNumber(int ceiling) {
         if (r == null)
-            Seed();
+            seed();
 
         return r.nextInt(ceiling);
     }
 
-    public static void seed()
-    {
+    public static void seed() {
         r = new java.util.Random();
     }
 
-    public static void seed(int seed)
-    {
+    public static void seed(int seed) {
         r = new java.util.Random(seed);
     }
 }

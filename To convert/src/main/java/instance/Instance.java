@@ -1,12 +1,13 @@
 package instance;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Instance {
     private String name;
     private String comment;
     private String type;
-    private Integer optimalValue;
+    private Double optimalValue;
     private Integer vehicles;
     private Integer dimension;
     private Integer stations;
@@ -14,10 +15,14 @@ public class Instance {
     private Integer energyCapacity;
     private Double energyConsumption;
     private String edgeWeightFormat;
-    private List<NodeCoordSection> nodeCoordSection;
-    private List<DemandSection> demandSection;
-    private List<StationsCoordSection> stationsCoordSection;
+    private List<NodeCoordSection> nodeCoordSection = new ArrayList<>();
+    private List<DemandSection> demandSection = new ArrayList<>();
+    private List<StationsCoordSection> stationsCoordSection = new ArrayList<>();
     private DepotSection depotSection;
+
+    public Instance() {
+    }
+
 
     public String getName() {
         return name;
@@ -43,11 +48,11 @@ public class Instance {
         this.type = type;
     }
 
-    public Integer getOptimalValue() {
+    public Double getOptimalValue() {
         return optimalValue;
     }
 
-    public void setOptimalValue(Integer optimalValue) {
+    public void setOptimalValue(Double optimalValue) {
         this.optimalValue = optimalValue;
     }
 
