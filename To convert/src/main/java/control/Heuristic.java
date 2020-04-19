@@ -26,7 +26,7 @@ public class Heuristic {
         double capacity_temp = 0.0;
         int from;
         int to;
-        int temp;
+
         int charging_station;
 
 
@@ -61,7 +61,7 @@ public class Heuristic {
                 energy_temp += get_energy_consumption(from, to);
                 best_sol.setTourAtIndex(to, best_sol.getSteps());
                 best_sol.incrementSteps();
-                ;
+
                 i++;
             } else if ((capacity_temp + customer_demand) > MAX_CAPACITY) {
                 capacity_temp = 0.0;

@@ -37,10 +37,13 @@ public class EVRP {
      /* utilisation de la classe Reader
      Reader rd = new Reader();
      */
-        public static void read_problem (String filename) throws Exception{
-            Instance instance = Reader.readERVPFile("C:\\Users\\MAU5Y\\Desktop\\EvrpApp\\evrpapp\\Original Cpp\\E-n22-k4.evrp");
+        public static void read_problem () throws Exception{
+            Instance instance = Reader.readERVPFile(problem_instance);
             problem_size = instance.getDimension();
+            ACTUAL_PROBLEM_SIZE = instance.getDimension() + instance.getStations();
             distances = generate_2D_matrix_double(ACTUAL_PROBLEM_SIZE, ACTUAL_PROBLEM_SIZE);
+            dimensions = instance.getDimension();
+            numberOfStations = instance.getStations();
 
     }
 

@@ -1,17 +1,25 @@
 package control;
-
-
 import java.util.Random;
 
+
 public class Main {
-    static int TERMINATION = 25000 * EVRP.dimensions + EVRP.numberOfStations;
+    public static int TERMINATION;
 
     /****************************************************************/
     public static void main(String[] args) throws Exception {
+        // read the file name from the args
+        if (args.length<2) {
+            System.err.println("Args are not supplied : ");
+            System.exit(2);
+        }
+        String param = args[0];
+        if(param.equals("-f")){
+            EVRP.problem_instance = args[1];
+        }
         int run;
         /*Step 1*/
-        final String problem_instance = "E-n22-k4.evrp";       //pass the .evrp filename as an argument
-        EVRP.read_problem(problem_instance);   //Read EVRP from file from EVRP.h
+        EVRP.read_problem();   //Read EVRP from file from EVRP.h
+        TERMINATION = (25000 * EVRP.dimensions) + EVRP.numberOfStations;
 
         /*Step 2*/
         Stats.open_stats();//open text files to store the best values from the 20 runs stats.h
@@ -20,12 +28,12 @@ public class Main {
             /*Step 3*/
             start_run(run);
             //Initialize your heuristic here
-            EVRP.initialize_heuristic(); //heuristic.h
+            EVRP.initialize_heuristic();
 
             /*Step 4*/
+            //Execute your heuristic
             while (!termination_condition()) {
-                //Execute your heuristic
-                Heuristic.run_heuristic();  //heuristic.h
+                Heuristic.run_heuristic();
             }
             //print_solution(best_sol->tour,best_sol->steps);
             //check_solution(best_sol->tour,best_sol->steps);
@@ -63,13 +71,9 @@ public class Main {
     static boolean termination_condition() {
 
         boolean flag;
-        if (EVRP.evals >= TERMINATION)
-            flag = true;
-        else
-            flag = false;
+        flag = EVRP.evals >= TERMINATION;
 
         return flag;
     }
-
 
 }

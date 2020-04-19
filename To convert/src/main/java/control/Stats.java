@@ -1,9 +1,11 @@
 package control;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 
 public class Stats {
 
@@ -11,7 +13,7 @@ public class Stats {
     //output files
     public static String perf_filename;
     public static double[] perf_of_trials;
-    private static String problem_instance;
+
     //Used to output offline performance and population diversity
 
     public Stats() {
@@ -19,7 +21,7 @@ public class Stats {
 
     public static void open_stats() {
         //Initialize
-        double[] perf_of_trials = new double[20];
+         perf_of_trials = new double[20];
 
         for (int i = 0; i < 20; i++) {
             perf_of_trials[i] = 0.0;
@@ -27,11 +29,24 @@ public class Stats {
 
 
         //initialize and open output files
-        perf_filename = String.format("stats.%s.txt", problem_instance);
+        File file  = new File(EVRP.problem_instance);
+
+        String sttatsFileName = file.exists() ? file.getName(): "";
+        perf_filename = String.format("stats.%s.txt", sttatsFileName);
         //for performance
         log_performance = new File(perf_filename);
         if (!log_performance.exists()) {
-            System.exit(2);
+            try {
+                new FileOutputStream(log_performance).close();
+                System.out.println("File created at " + log_performance.getAbsolutePath());
+            } catch (IOException e) {
+                System.err.println("File not created ");
+                e.printStackTrace();
+            }
+        }
+        else {
+            System.out.println("File already exists at " + log_performance.getAbsolutePath());
+
         }
         //initialize and open output files
     }
