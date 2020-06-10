@@ -1,58 +1,53 @@
 package control;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
+import java.io.*;
 
 public class Stats {
 
-    public static File log_performance;
+    public static File logPerformance;
     //output files
-    public static String perf_filename;
-    public static double[] perf_of_trials;
+    public static String perfFileName;
+    public static double[] perfOfTrials;
 
     //Used to output offline performance and population diversity
 
     public Stats() {
     }
 
-    public static void open_stats() {
+    public static void openStats() {
         //Initialize
-         perf_of_trials = new double[20];
+        perfOfTrials = new double[20];
 
         for (int i = 0; i < 20; i++) {
-            perf_of_trials[i] = 0.0;
+            perfOfTrials[i] = 0.0;
         }
 
 
         //initialize and open output files
-        File file  = new File(EVRP.problem_instance);
+        File file  = new File(EVRP.problemInstance);
 
         String sttatsFileName = file.exists() ? file.getName(): "";
-        perf_filename = String.format("stats.%s.txt", sttatsFileName);
+        perfFileName = String.format("stats_.%s.txt", sttatsFileName);
         //for performance
-        log_performance = new File(perf_filename);
-        if (!log_performance.exists()) {
+        logPerformance = new File(perfFileName);
+        if (!logPerformance.exists()) {
             try {
-                new FileOutputStream(log_performance).close();
-                System.out.println("File created at " + log_performance.getAbsolutePath());
+                new FileOutputStream(logPerformance).close();
+                System.out.println("File created at " + logPerformance.getAbsolutePath());
             } catch (IOException e) {
                 System.err.println("File not created ");
                 e.printStackTrace();
             }
         }
         else {
-            System.out.println("File already exists at " + log_performance.getAbsolutePath());
+            System.out.println("File already exists at " + logPerformance.getAbsolutePath());
 
         }
         //initialize and open output files
     }
 
-    public static void get_mean(int r, double value) {
-        perf_of_trials[r] = value;
+    public static void getMean(int r, double value) {
+        perfOfTrials[r] = value;
 
     }
 
@@ -79,7 +74,7 @@ public class Stats {
         return Math.sqrt(dev / (double) (size - 1)); //standard deviation
     }
 
-    public static double best_of_vector(double[] values, int l) {
+    public static double bestOfVector(double[] values, int l) {
         double min;
         int k;
         k = 0;
@@ -93,7 +88,7 @@ public class Stats {
     }
 
 
-    public static double worst_of_vector(double[] values, int l) {
+    public static double worstOfVector(double[] values, int l) {
         double max;
         int k;
         k = 0;
@@ -106,34 +101,34 @@ public class Stats {
         return max;
     }
 
-    public static void close_stats() {
+    public static void closeStats() {
         int i;
         int j;
-        double perf_mean_value;
-        double perf_stdev_value;
+        double perfMeanValue;
+        double perfStdevValue;
 
         //For statistics
         for (i = 0; i < 20; i++) {
-            //cout << i << " " << perf_of_trials[i] << endl;
+            //cout << i << " " << perfOfTrials[i] << endl;
             //cout << i << " " << time_of_trials[i] << endl;
-            fprintf(log_performance, "%.2f", perf_of_trials[i]);
-            fprintf(log_performance, "\n");
+            fprintf(logPerformance, "%.2f", perfOfTrials[i]);
+            fprintf(logPerformance, "\n");
 
         }
 
-        perf_mean_value = mean(perf_of_trials, 20);
-        perf_stdev_value = stdev(perf_of_trials, 20, perf_mean_value);
-        fprintf(log_performance, "Mean %f\t ", perf_mean_value);
-        fprintf(log_performance, "\tStd Dev %f\t ", perf_stdev_value);
-        fprintf(log_performance, "\n");
-        fprintf(log_performance, "Min: %f\t ", best_of_vector(perf_of_trials, 20));
-        fprintf(log_performance, "\n");
-        fprintf(log_performance, "Max: %f\t ", worst_of_vector(perf_of_trials, 20));
-        fprintf(log_performance, "\n");
+        perfMeanValue = mean(perfOfTrials, 20);
+        perfStdevValue = stdev(perfOfTrials, 20, perfMeanValue);
+        fprintf(logPerformance, "Mean %f\t ", perfMeanValue);
+        fprintf(logPerformance, "\tStd Dev %f\t ", perfStdevValue);
+        fprintf(logPerformance, "\n");
+        fprintf(logPerformance, "Min: %f\t ", bestOfVector(perfOfTrials, 20));
+        fprintf(logPerformance, "\n");
+        fprintf(logPerformance, "Max: %f\t ", worstOfVector(perfOfTrials, 20));
+        fprintf(logPerformance, "\n");
     }
 
-    private static void fprintf(File log_performance, String s, Object... args) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(log_performance, true))) {
+    private static void fprintf(File logPerformance, String s, Object... args) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(logPerformance, true))) {
             writer.print(String.format(s, args));
         } catch (IOException e) {
 

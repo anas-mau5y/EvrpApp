@@ -1,100 +1,87 @@
 package control;
 
+
 import structures.RandomNumbers;
-import structures.Solution;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static control.EVRP.*;
 
 public class Heuristic {
 
-    private static final double RAND_MAX = 0d;
-
     public Heuristic() {
     }
 
-    public static void run_heuristic() {
-
-        Solution best_sol = initialize_heuristic();
-
+    public static void runHeuristic() {
         /*generate a random solution for the random heuristic*/
-        int i;
         int help;
         int object;
-        int tot_assigned = 0;
-        int[] r;
-        double energy_temp = 0.0;
-        double capacity_temp = 0.0;
+        int TotAssigned = 0;
+        List<Integer> r = new ArrayList<>();
+        double energyTemp = 0.0;
+        double capacityTemp = 0.0;
         int from;
         int to;
 
-        int charging_station;
+        int chargingStation;
 
-
-        r = new int[NUM_OF_CUSTOMERS + 1];
         //set indexes of objects
-        for (i = 1; i <= NUM_OF_CUSTOMERS; i++) {
-            r[i - 1] = i;
-
-        }
-        //randomly change indexes of objects
-        for (i = 0; i <= NUM_OF_CUSTOMERS; i++) {
-            object = (int) ((RandomNumbers.nextNumber() / (RAND_MAX + 1.0)) * (double) (NUM_OF_CUSTOMERS - tot_assigned));
-            help = r[i];
-            r[i] = r[i + object];
-            r[i + object] = help;
-            tot_assigned++;
+        for (int i = 1; i <= numOfCustomers; i++) {
+            r.add(i);
         }
 
-        best_sol.setSteps(0);
-        best_sol.setTour_length(Integer.MAX_VALUE);
-        best_sol.setTourAtIndex(DEPOT, 0);
-        best_sol.incrementSteps();
+        Collections.shuffle(r);
+        bestSol.setSteps(0);
+        bestSol.settourLength(Integer.MAX_VALUE);
+        bestSol.setTourAtIndex(depot, 0);
+        bestSol.incrementSteps();
 
-        i = 0;
-        while (i < NUM_OF_CUSTOMERS) {
-            from = best_sol.getTourAt(best_sol.getSteps() - 1);
-            to = r[i];
+        int i = 0;
+        while (i < numOfCustomers) {
+            from = bestSol.getTourAt(bestSol.getSteps() - 1);
+            to = r.get(i);
 
             double customer_demand = getCustomerDemand(to);
-            if ((capacity_temp + customer_demand) <= MAX_CAPACITY && energy_temp + get_energy_consumption(from, to) <= BATTERY_CAPACITY) {
-                capacity_temp += customer_demand;
-                energy_temp += get_energy_consumption(from, to);
-                best_sol.setTourAtIndex(to, best_sol.getSteps());
-                best_sol.incrementSteps();
+            if ((capacityTemp + customer_demand) <= maxCapacity
+                    && energyTemp + getEnergyConsumption(from, to) <= batteryCapacity) {
+                capacityTemp += customer_demand;
+                energyTemp += getEnergyConsumption(from, to);
+                bestSol.setTourAtIndex(to, bestSol.getSteps());
+                bestSol.incrementSteps();
 
                 i++;
-            } else if ((capacity_temp + customer_demand) > MAX_CAPACITY) {
-                capacity_temp = 0.0;
-                energy_temp = 0.0;
-                best_sol.setTourAtIndex(DEPOT, best_sol.getSteps());
-                best_sol.incrementSteps();
-            } else if (energy_temp + get_energy_consumption(from, to) > BATTERY_CAPACITY) {
-                charging_station = RandomNumbers.nextNumber() % (ACTUAL_PROBLEM_SIZE - NUM_OF_CUSTOMERS - 1) + NUM_OF_CUSTOMERS + 1;
-                if (is_charging_station(charging_station)) {
-                    energy_temp = 0.0;
-                    best_sol.setTourAtIndex(charging_station, best_sol.getSteps());
-                    best_sol.incrementSteps();
+            } else if ((capacityTemp + customer_demand) > maxCapacity) {
+                capacityTemp = 0.0;
+                energyTemp = 0.0;
+                bestSol.setTourAtIndex(depot, bestSol.getSteps());
+                bestSol.incrementSteps();
+            } else if (energyTemp + getEnergyConsumption(from, to) > batteryCapacity) {
+                chargingStation = RandomNumbers.nextNumber() % (INSTANCE.getActuelProblemSize() - numOfCustomers - 1) + numOfCustomers + 1;
+                if (isChargingStation(chargingStation)) {
+                    energyTemp = 0.0;
+                    bestSol.setTourAtIndex(chargingStation, bestSol.getSteps());
+                    bestSol.incrementSteps();
                 }
             } else {
-                capacity_temp = 0.0;
-                energy_temp = 0.0;
-                best_sol.setTourAtIndex(DEPOT, best_sol.getSteps());
-                best_sol.incrementSteps();
+                capacityTemp = 0.0;
+                energyTemp = 0.0;
+                bestSol.setTourAtIndex(depot, bestSol.getSteps());
+                bestSol.incrementSteps();
             }
         }
 
         //close EVRP tour to return back to the depot
-        if (best_sol.getTourAt(best_sol.getSteps() - 1) != DEPOT) {
-            best_sol.setTourAtIndex(DEPOT, best_sol.getSteps());
-            best_sol.incrementSteps();
+        if (bestSol.getTourAt(bestSol.getSteps() - 1) != depot) {
+            bestSol.setTourAtIndex(depot, bestSol.getSteps());
+            bestSol.incrementSteps();
         }
 
     }
 
-    private static double getCustomerDemand(int to) {
-        return 0d; // TODO
+    public static Integer getCustomerDemand(int to) {
+        return INSTANCE.getDemandSection().get(to-1).getDemande();
     }
-    /*implement your heuristic in this function*/
 
-    /*implement your heuristic in this function*/
 }

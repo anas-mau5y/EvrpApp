@@ -1,3 +1,5 @@
+//La classe qui lit le fichier et recupere les donnees sous forme d'une instance (Parser)
+
 package instance;
 
 import java.io.File;
@@ -12,7 +14,7 @@ import static java.lang.Double.valueOf;
 
 public class Reader {
 
-    private static final String NODE_COORD_SECTION = "NODE_COORD_SECTION";
+    private static final String COORD_SECTION = "NODE_COORD_SECTION";
     private static final String DEMAND_SECTION = "DEMAND_SECTION";
     private static final String STATIONS_COORD_SECTION = "STATIONS_COORD_SECTION";
     private static final String DEPOT_SECTION = "DEPOT_SECTION";
@@ -52,7 +54,7 @@ public class Reader {
                 final String line = scanner.nextLine();
                 String trimmedLine = line.trim();
                 switch (trimmedLine) {
-                    case NODE_COORD_SECTION:
+                    case COORD_SECTION:
                         readNodeCoordSection(instance, scanner);
                         break;
                     case DEMAND_SECTION:
