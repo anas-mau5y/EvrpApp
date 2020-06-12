@@ -3,7 +3,6 @@ package control;
 import instance.Instance;
 import instance.NodeCoordSection;
 import instance.Reader;
-import structures.Node;
 import structures.Solution;
 
 import java.util.List;
@@ -149,14 +148,7 @@ public class EVRP {
         return 0;
     }
 
-    public static void initializeHeuristic() {
-        bestSol = new Solution();
-        bestSol.setTour(new int[INSTANCE.getActuelProblemSize() - 1 + 1000]);
-        bestSol.setId(1);
-        bestSol.setSteps(0);
-        bestSol.settourLength(Integer.MAX_VALUE);
 
-    }
 
     static double getEnergyConsumption(int from, int to) {
         return energy_consumption * distances[from][to];

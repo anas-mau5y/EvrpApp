@@ -1,7 +1,7 @@
 package control;
 
 
-import structures.RandomNumbers;
+import structures.Solution;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,26 +13,39 @@ public class Heuristic {
 
     public Heuristic() {
     }
+    public static void initializeHeuristic() {
+        bestSol = new Solution();
+        bestSol.setTour(new int[INSTANCE.getActuelProblemSize() - 1 + 1000]);
+        bestSol.setId(1);
+        bestSol.setSteps(0);
+        bestSol.settourLength(Integer.MAX_VALUE);
 
+    }
     public static void runHeuristic() {
         /*generate a random solution for the random heuristic*/
-        int help;
+        int help, help2;
         int object;
         int TotAssigned = 0;
-        List<Integer> r = new ArrayList<>();
+
         double energyTemp = 0.0;
         double capacityTemp = 0.0;
         int from;
         int to;
-
-        int chargingStation;
-
+        List<Integer> r = new ArrayList<>();
         //set indexes of objects
         for (int i = 1; i <= numOfCustomers; i++) {
             r.add(i);
         }
+  //      Collections.shuffle(r);
+       for(int i = 0; i < numOfCustomers; i++){
+            object = (int) ((Math.random()) * (double)(numOfCustomers-TotAssigned));
+            help = r.get(i);
+            help2 = r.get(i + object);
+            r.set(i,help2);
+            r.set(i+object,help);
+            TotAssigned++;
+        }
 
-        Collections.shuffle(r);
         bestSol.setSteps(0);
         bestSol.settourLength(Integer.MAX_VALUE);
         bestSol.setTourAtIndex(depot, 0);
@@ -58,7 +71,7 @@ public class Heuristic {
                 bestSol.setTourAtIndex(depot, bestSol.getSteps());
                 bestSol.incrementSteps();
             } else if (energyTemp + getEnergyConsumption(from, to) > batteryCapacity) {
-                chargingStation = RandomNumbers.nextNumber() % (INSTANCE.getActuelProblemSize() - numOfCustomers - 1) + numOfCustomers + 1;
+                int chargingStation = (int) (Math.random() % (INSTANCE.getActuelProblemSize() - numOfCustomers - 1) + numOfCustomers + 1);
                 if (isChargingStation(chargingStation)) {
                     energyTemp = 0.0;
                     bestSol.setTourAtIndex(chargingStation, bestSol.getSteps());
