@@ -19,4 +19,11 @@ public class DemandSection {
     public void setDemande(Integer demande) {
         this.demande = demande;
     }
+    public Integer getDemandeById(int target){
+        Integer demandet = null;
+        if(target==this.nodeId) {
+            demandet = this.demande;
+        }
+        return demandet;
+    }
 }

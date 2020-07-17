@@ -14,8 +14,9 @@ public class Heuristic {
     public Heuristic() {
     }
     public static void initializeHeuristic() {
+     //   int  numOfCustomerstmp = INSTANCE.getActuelProblemSize() - INSTANCE.getStations();
         bestSol = new Solution();
-        bestSol.setTour(new int[INSTANCE.getActuelProblemSize() - 1 + 1000]);
+        bestSol.setTour(new int[numOfCustomers + 1000]);
         bestSol.setId(1);
         bestSol.setSteps(0);
         bestSol.settourLength(Integer.MAX_VALUE);
@@ -23,9 +24,9 @@ public class Heuristic {
     }
     public static void runHeuristic() {
         /*generate a random solution for the random heuristic*/
-        int help, help2;
-        int object;
-        int TotAssigned = 0;
+        //int help, help2;
+        //  int object;
+        //   int TotAssigned = 0;
 
         double energyTemp = 0.0;
         double capacityTemp = 0.0;
@@ -36,15 +37,17 @@ public class Heuristic {
         for (int i = 1; i <= numOfCustomers; i++) {
             r.add(i);
         }
-  //      Collections.shuffle(r);
-       for(int i = 0; i < numOfCustomers; i++){
+       Collections.shuffle(r);
+       //System.out.println(r.toString());
+     /*  for(int i = 0; i < numOfCustomers; i++){
             object = (int) ((Math.random()) * (double)(numOfCustomers-TotAssigned));
             help = r.get(i);
             help2 = r.get(i + object);
             r.set(i,help2);
             r.set(i+object,help);
             TotAssigned++;
-        }
+
+        } */
 
         bestSol.setSteps(0);
         bestSol.settourLength(Integer.MAX_VALUE);
@@ -57,6 +60,7 @@ public class Heuristic {
             to = r.get(i);
 
             double customer_demand = getCustomerDemand(to);
+
             if ((capacityTemp + customer_demand) <= maxCapacity
                     && energyTemp + getEnergyConsumption(from, to) <= batteryCapacity) {
                 capacityTemp += customer_demand;
@@ -90,7 +94,7 @@ public class Heuristic {
             bestSol.setTourAtIndex(depot, bestSol.getSteps());
             bestSol.incrementSteps();
         }
-
+      bestSol.settourLength(fitnessEvaluation(bestSol.getTour(),bestSol.getSteps()));
     }
 
     public static Integer getCustomerDemand(int to) {

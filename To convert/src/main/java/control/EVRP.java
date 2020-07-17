@@ -1,10 +1,12 @@
 package control;
 
+import instance.DemandSection;
 import instance.Instance;
 import instance.NodeCoordSection;
 import instance.Reader;
 import structures.Solution;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.sqrt;
@@ -16,7 +18,8 @@ public class EVRP {
     public static int NUM_OF_STATIONS;
     public static int batteryCapacity;       //maximum energy of vehicles
     public static int maxCapacity;           //capacity of vehicles
-    public static List<NodeCoordSection> NodeList;     //List of nodes with id and x and y coordinates
+    public static List<NodeCoordSection> NodeList;//List of nodes with id and x and y coordinates
+    public static List<DemandSection> demandeList;
     public static int problemSize;                //Problem dimension read
     public static boolean[] chargingStationFlags;
     public static double energy_consumption;
@@ -49,7 +52,9 @@ public class EVRP {
         chargingStationFlags = new boolean[problemSize];
         energy_consumption = INSTANCE.getEnergyConsumption();
         NodeList = INSTANCE.getNodeCoordSection();
+        demandeList = INSTANCE.getDemandSection();
         computeDistances();
+
     }
 
     /****************************************************************/
@@ -67,6 +72,7 @@ public class EVRP {
         //        //Route 1: 0 - 5 - 6 - 8 - 0
         //        //Route 2: 0 - 1 - 2 - 3 - 4 - 0
         //        //Route 3: 0 - 7 - 0
+
         for (i = 0; i < size - 1; i++) {
             tourLength += distances[routes[i]][routes[i + 1]];
         }
@@ -144,8 +150,14 @@ public class EVRP {
         }
     }
 
-    private static double getCustomerDemand(int to) {
-        return 0;
+    public static double getCustomerDemand(int target) {
+    //    final DemandSection demandeInst;
+      //  demandeInst = demandeList.get(to);
+        //custeTemp = Double.valueOf(demandeInst.getDemandeById(to));
+       // double custeTemp = valueOf(demandeInst.getDemande());
+
+        return target*43.0;
+
     }
 
 
